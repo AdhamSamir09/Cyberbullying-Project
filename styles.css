@@ -120,3 +120,16 @@
       font-size: 1rem;
     }
   }
+  button {
+    background-color: #a8dadc; /* Soft pastel teal */
+    color: #033649;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+  }
