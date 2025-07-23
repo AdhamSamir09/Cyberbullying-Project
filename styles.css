@@ -1,0 +1,122 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body style */
+  body {
+    font-family: Arial, sans-serif;
+    background: url('background.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  /* Main container */
+  .container {
+    background-color: #fff; /* White card */
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    max-width: 700px;
+    width: 100%;
+  }
+  
+  /* Titles */
+  .title {
+    font-size: 2rem;
+    color: #4a6fa5; /* Pastel blue */
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  /* Subtitles */
+  .subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  /* Form style */
+  .quiz-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* Question Block */
+  .question-block {
+    background-color: #f2f8ff;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #dce7f9;
+  }
+  
+  /* Labels */
+  label {
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  /* Radio Inputs */
+  input[type="radio"] {
+    margin-right: 8px;
+  }
+  
+  /* Text Inputs */
+  input[type="text"],
+  input[type="password"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+    margin-top: 5px;
+  }
+  
+  /* Submit Btn Style */
+  .submit-btn {
+    background-color: #a8dadc; /* Soft pastel teal */
+    color: #033649;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+  }
+  
+  .submit-btn:hover {
+    background-color: #90c7c9;
+  }
+  
+  /* Feedback Messages */
+  .feedback {
+    font-size: 0.95rem;
+    margin-top: 10px;
+  }
+  
+  /* User Interactive Design */
+  @media (max-width: 600px) {
+    .container {
+      padding: 20px;
+    }
+  
+    .title {
+      font-size: 1.5rem;
+    }
+  
+    .subtitle {
+      font-size: 1rem;
+    }
+  }

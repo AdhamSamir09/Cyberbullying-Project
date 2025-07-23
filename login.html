@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Think Before You Type - Login</title>
+  <!-- Link css file -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Login header -->
+    <h1 class="title">Login</h1>
+
+    <!-- Login form (switch to quiz page after submit) -->
+    <form 
+      onsubmit="event.preventDefault(); window.location.href='quiz.html';" 
+      class="quiz-form"
+    >
+      <!-- Username input -->
+      <div class="question-block">
+        <label>Username:</label>
+        <input type="text" required style="width: 100%; padding: 8px; margin-top: 5px;">
+      </div>
+
+      <!-- Password input -->
+      <div class="question-block">
+        <label>Password:</label>
+        <input type="password" required style="width: 100%; padding: 8px; margin-top: 5px;">
+      </div>
+
+      <!-- Login btn -->
+      <button type="submit" class="submit-btn">Login</button>
+    </form>
+  </div>
+</body>
+</html>
