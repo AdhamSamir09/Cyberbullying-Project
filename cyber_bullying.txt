@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmpowerUp: Fight Cyberbullying</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #eef2f6; /* Lighter blue-gray background */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #cbd5e1; /* Slate 300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #64748b; /* Slate 600 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569; /* Slate 700 */
+        }
+        .choice-button {
+            transition: all 0.2s ease-in-out;
+        }
+        .choice-button.correct {
+            background-color: #dcfce7; /* Green 100 */
+            border-color: #22c55e; /* Green 500 */
+            color: #16a34a; /* Green 700 */
+            font-weight: 600;
+        }
+        .choice-button.incorrect {
+            background-color: #fee2e2; /* Red 100 */
+            border-color: #ef4444; /* Red 500 */
+            color: #dc2626; /* Red 700 */
+            font-weight: 600;
+        }
+        .choice-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-4 shadow-xl">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <h1 class="text-3xl font-extrabold mb-2 md:mb-0 tracking-wide">EmpowerUp</h1>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="#" class="hover:underline text-lg font-medium p-2 rounded-md hover:bg-blue-700 transition duration-300">Home</a></li>
+                    <li><a href="#" class="hover:underline text-lg font-medium p-2 rounded-md hover:bg-blue-700 transition duration-300">About</a></li>
+                    <li><a href="#" class="hover:underline text-lg font-medium p-2 rounded-md hover:bg-blue-700 transition duration-300">Quiz</a></li>
+                    <li><a href="#" class="hover:underline text-lg font-medium p-2 rounded-md hover:bg-blue-700 transition duration-300">Resources</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow container mx-auto p-6 md:p-8 my-8 bg-white shadow-2xl rounded-xl border border-gray-200 flex flex-col items-center justify-center">
+
+        <!-- Loading Spinner -->
+        <div id="loading-spinner" class="text-center py-10 hidden">
+            <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500 mx-auto mb-4"></div>
+            <p class="text-gray-700 text-xl font-semibold">Initializing...</p>
+        </div>
+
+        <!-- Info Collection Section -->
+        <section id="info-collection-section" class="w-full max-w-md p-8 rounded-xl shadow-lg border border-gray-200 bg-white">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Tell Us About Yourself</h2>
+            <p class="text-gray-600 text-center mb-6">This information helps us understand our users better and is kept anonymous.</p>
+
+            <div class="mb-5">
+                <label for="age" class="block text-gray-700 text-lg font-medium mb-2">Age:</label>
+                <input type="number" id="age" min="5" max="100" placeholder="Enter your age"
+                       class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <p id="age-error" class="text-red-500 text-sm mt-1 hidden">Please enter a valid age (5-100).</p>
+            </div>
+
+            <div class="mb-8">
+                <label for="gender" class="block text-gray-700 text-lg font-medium mb-2">Gender:</label>
+                <select id="gender"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select your gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+                <p id="gender-error" class="text-red-500 text-sm mt-1 hidden">Please select your gender.</p>
+            </div>
+
+            <button id="start-quiz-button"
+                    class="w-full bg-blue-600 text-white px-8 py-3 rounded-full text-xl font-semibold shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+                Start Quiz
+            </button>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="quiz-section" class="w-full max-w-2xl hidden">
+            <h2 class="text-4xl font-extrabold text-gray-800 mb-8 text-center leading-tight">How Would You Respond?</h2>
+
+            <!-- Question Card -->
+            <div class="bg-blue-50 p-6 sm:p-8 rounded-2xl shadow-lg border border-blue-200 mb-8">
+                <p id="question-text" class="text-blue-800 text-2xl font-semibold leading-relaxed">
+                    <!-- Question will be loaded here by JavaScript -->
+                </p>
+            </div>
+
+            <!-- Choices Container -->
+            <div id="choices-container" class="grid grid-cols-1 gap-4 sm:gap-6 mb-8">
+                <!-- Choice buttons will be loaded here by JavaScript -->
+            </div>
+
+            <!-- Feedback and Next Button -->
+            <div id="feedback-area" class="text-center mb-8 p-4 rounded-xl hidden">
+                <p id="feedback-text" class="text-lg font-medium mb-4"></p>
+                <button id="next-button" class="bg-blue-600 text-white px-8 py-3 rounded-full text-xl font-semibold shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+                    Next Scenario
+                </button>
+            </div>
+        </section>
+
+        <!-- Quiz Results Section -->
+        <section id="results-area" class="w-full max-w-2xl text-center hidden">
+            <h3 class="text-4xl font-bold text-gray-800 mb-6">Quiz Complete!</h3>
+            <p class="text-2xl text-gray-700 mb-8">You answered <span id="score-display" class="font-bold text-blue-600">0</span> out of <span id="total-questions-display" class="font-bold text-blue-600">0</span> scenarios correctly.</p>
+
+            <!-- Conditional Advice/Message -->
+            <div id="final-message-container" class="mt-10 p-8 rounded-2xl shadow-xl border">
+                <p id="final-message" class="text-xl font-medium mb-6 leading-relaxed"></p>
+                <button id="restart-button" class="px-10 py-4 rounded-full text-xl font-bold shadow-lg transition duration-300 transform hover:scale-105">
+                    <!-- Button text and style will change based on score -->
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white p-6 mt-auto shadow-inner">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2025 EmpowerUp. All rights reserved.</p>
+            <div class="flex justify-center space-x-6 mt-4">
+                <a href="#" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a>
+                <a href="#" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        // Firebase imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase variables
+        let app;
+        let db;
+        let sessionID; // Unique ID for this quiz session
+        let isFirestoreReady = false; // Flag to ensure Firestore is ready
+
+        // Global variables provided by the Canvas environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+
+        // User info variables
+        let userAge = null;
+        let userGender = null;
+
+        // --- Larger pool of quiz questions ---
+        const allQuizQuestions = [
+            {
+                question: "Someone posts a mean comment about your appearance online. How do you respond?",
+                choices: [
+                    "Post something mean back about their appearance.",
+                    "Ignore it and hope it goes away.",
+                    "Block them and report the comment to the platform.",
+                    "Reply: 'Your words don't define me. Please stop.'"
+                ],
+                correctAnswer: 3, // Direct assertive response
+                feedback: "A calm, assertive response can sometimes de-escalate the situation and show the bully their words don't affect you. If it continues, then involving an adult or blocking/reporting is important."
+            },
+            {
+                question: "You see a group chat where classmates are spreading rumors about a friend. What's your move?",
+                choices: [
+                    "Leave the group chat quietly.",
+                    "Privately message your friend to warn them.",
+                    "Post in the group chat: 'This isn't cool. Stop spreading rumors.'",
+                    "Join in to avoid being targeted yourself."
+                ],
+                correctAnswer: 2, // Direct public intervention
+                feedback: "Being an 'upstander' by publicly challenging the bullying can make a big difference. It shows support for the victim and tells the bullies their behavior is unacceptable. If this doesn't stop it, then consider reporting."
+            },
+            {
+                question: "Someone sends you repeated, unwanted messages late at night. What's your immediate action?",
+                choices: [
+                    "Reply angrily telling them to leave you alone.",
+                    "Turn off your phone and go to sleep.",
+                    "Send a clear message: 'Do not contact me again. I will block you if you continue.'",
+                    "Ask them why they are doing this."
+                ],
+                correctAnswer: 2, // Direct firm boundary setting
+                feedback: "Setting clear boundaries is essential. A direct and firm message can communicate that their behavior is unacceptable and that you will take further action if it persists. Then, block them if they don't stop."
+            },
+            {
+                question: "A former friend posts an embarrassing photo of you online without your permission. What should you do?",
+                choices: [
+                    "Post an embarrassing photo of them in return.",
+                    "Ask mutual friends to tell them to take it down.",
+                    "Directly message them: 'Please take down that photo immediately. You didn't have my permission.'",
+                    "Report the photo to the platform without contacting them."
+                ],
+                correctAnswer: 2, // Direct request for removal
+                feedback: "Directly asking for the removal of content you didn't consent to is a powerful first step. It clearly communicates your boundaries and gives them a chance to rectify the mistake. If they refuse, then report it to the platform."
+            },
+            {
+                question: "You receive a message from an unknown number with a rude and inappropriate meme. What's your response?",
+                choices: [
+                    "Send a rude meme back.",
+                    "Share the meme with your friends to laugh at it.",
+                    "Block the number immediately and do not respond.",
+                    "Reply asking 'Who is this?'"
+                ],
+                correctAnswer: 2, // Direct action to stop contact
+                feedback: "When receiving unwanted or inappropriate content from an unknown source, the safest and most effective action is to block them immediately. Do not engage, as it can encourage further contact."
+            },
+            {
+                question: "Someone makes a fake profile of you and starts posting mean things. What's your first step?",
+                choices: [
+                    "Create a fake profile of them in retaliation.",
+                    "Ignore it, hoping it will disappear.",
+                    "Message the person from your real profile telling them to stop.",
+                    "Report the fake profile to the social media platform immediately."
+                ],
+                correctAnswer: 3, // Report to platform for impersonation
+                feedback: "Impersonation is a serious violation of platform rules. Reporting the fake profile directly to the platform is the most effective way to get it removed and protect your identity."
+            },
+            {
+                question: "You're playing an online game, and another player is constantly harassing you and using offensive language. What should you do?",
+                choices: [
+                    "Harass them back even worse.",
+                    "Leave the game and never play online again.",
+                    "Mute or block the player and report their behavior through the game's reporting system.",
+                    "Tell them to 'chill out'."
+                ],
+                correctAnswer: 2, // Mute/block and report in-game
+                feedback: "Most online games have reporting features. Using these tools to mute/block the offender and report their behavior helps maintain a positive gaming environment for everyone."
+            },
+            {
+                question: "Someone shares a private conversation you had with them, making fun of you. How do you confront them?",
+                choices: [
+                    "Share one of their private conversations to get revenge.",
+                    "Pretend you don't care and move on.",
+                    "Message them directly: 'It was wrong to share our private conversation. Please take it down.'",
+                    "Tell all your friends what they did."
+                ],
+                correctAnswer: 2, // Direct request for removal of private content
+                feedback: "Directly communicating your feelings and requesting the removal of private content is important. It sets a boundary and gives them an opportunity to correct their mistake. If they don't comply, then consider reporting to the platform."
+            },
+            {
+                question: "You receive a message saying 'Everyone hates you.' What's the best way to handle this?",
+                choices: [
+                    "Believe it and feel sad.",
+                    "Ask 'Why do you say that?'",
+                    "Reply: 'That's not true, and your negativity won't affect me.'",
+                    "Block the sender without responding."
+                ],
+                correctAnswer: 2, // Direct dismissal of negativity
+                feedback: "Responding with a strong, dismissive statement shows the bully that their words have no power over you. It's about protecting your self-worth and not engaging in their negativity."
+            },
+            {
+                question: "You accidentally sent a message to the wrong person, and they are now mocking you for it publicly. What's your action?",
+                choices: [
+                    "Delete your original message and hope no one saw it.",
+                    "Apologize profusely and beg them to stop.",
+                    "Publicly state: 'Yes, I made a mistake, but it's not okay to mock me for it.'",
+                    "Ignore the public mockery."
+                ],
+                correctAnswer: 2, // Acknowledging mistake, setting boundary
+                feedback: "Acknowledging your mistake while firmly setting a boundary against public mockery can disarm the bully. It shows maturity and that you won't tolerate being ridiculed."
+            }
+        ];
+
+        let quizQuestionsForThisAttempt = []; // This will hold the subset of questions for the current quiz
+
+        // Quiz state variables
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let quizActive = true; // Flag to indicate if the quiz is still running
+        const numberOfQuestionsPerQuiz = 5; // How many questions to ask in each quiz
+        const passingScore = Math.ceil(numberOfQuestionsPerQuiz * 0.7); // Example: 70% to pass for "good" score
+
+        // DOM elements
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const infoCollectionSection = document.getElementById('info-collection-section');
+        const ageInput = document.getElementById('age');
+        const genderSelect = document.getElementById('gender');
+        const ageError = document.getElementById('age-error');
+        const genderError = document.getElementById('gender-error');
+        const startQuizButton = document.getElementById('start-quiz-button');
+
+        const quizSection = document.getElementById('quiz-section');
+        const questionTextElement = document.getElementById('question-text');
+        const choicesContainer = document.getElementById('choices-container');
+        const feedbackArea = document.getElementById('feedback-area');
+        const feedbackTextElement = document.getElementById('feedback-text');
+        const nextButton = document.getElementById('next-button');
+        const resultsArea = document.getElementById('results-area');
+        const scoreDisplay = document.getElementById('score-display');
+        const totalQuestionsDisplay = document.getElementById('total-questions-display');
+        const finalMessageContainer = document.getElementById('final-message-container');
+        const finalMessage = document.getElementById('final-message');
+        const restartButton = document.getElementById('restart-button');
+
+        /**
+         * Shuffles an array in place (Fisher-Yates algorithm).
+         * @param {Array} array The array to shuffle.
+         */
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+            }
+        }
+
+        /**
+         * Selects a random subset of questions from the allQuizQuestions pool.
+         * @param {number} count The number of questions to select.
+         * @returns {Array} An array containing the randomly selected questions.
+         */
+        function selectRandomQuestions(count) {
+            const shuffledQuestions = [...allQuizQuestions]; // Create a shallow copy
+            shuffleArray(shuffledQuestions);
+            return shuffledQuestions.slice(0, count);
+        }
+
+        /**
+         * Initializes Firebase Firestore.
+         */
+        document.addEventListener('DOMContentLoaded', async () => {
+            loadingSpinner.classList.remove('hidden'); // Show loading spinner
+
+            // Check if firebaseConfig is valid before initializing
+            if (Object.keys(firebaseConfig).length > 0 && firebaseConfig.projectId) {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                isFirestoreReady = true;
+                console.log("Firestore initialized.");
+            } else {
+                console.warn("Firebase config not found or invalid. Running without data persistence.");
+            }
+
+            loadingSpinner.classList.add('hidden'); // Hide loading spinner
+            infoCollectionSection.classList.remove('hidden'); // Show info collection section
+        });
+
+        /**
+         * Handles submission of user information and starts the quiz.
+         */
+        function submitUserInfo() {
+            let isValid = true;
+
+            // Validate Age
+            const ageValue = parseInt(ageInput.value);
+            if (isNaN(ageValue) || ageValue < 5 || ageValue > 100) {
+                ageError.classList.remove('hidden');
+                isValid = false;
+            } else {
+                ageError.classList.add('hidden');
+                userAge = ageValue;
+            }
+
+            // Validate Gender
+            const genderValue = genderSelect.value;
+            if (genderValue === "") {
+                genderError.classList.remove('hidden');
+                isValid = false;
+            } else {
+                genderError.classList.add('hidden');
+                userGender = genderValue;
+            }
+
+            if (isValid) {
+                sessionID = crypto.randomUUID(); // Generate a unique ID for this session
+                quizQuestionsForThisAttempt = selectRandomQuestions(numberOfQuestionsPerQuiz); // Select new questions
+                infoCollectionSection.classList.add('hidden'); // Hide info collection
+                quizSection.classList.remove('hidden'); // Show quiz
+                loadQuestion(); // Start the quiz
+            }
+        }
+
+        /**
+         * Saves the quiz attempt data (age, gender, score) to Firestore.
+         * @param {number} currentScore The score to save.
+         */
+        async function saveQuizAttempt(currentScore) {
+            if (!isFirestoreReady || !db || !sessionID) {
+                console.warn("Firestore not ready or session ID missing. Quiz attempt not saved.");
+                return;
+            }
+            try {
+                // Store in /artifacts/{appId}/public/data/quiz_attempts/{sessionId}
+                const attemptDocRef = doc(db, `artifacts/${appId}/public/data/quiz_attempts`, sessionID);
+                await setDoc(attemptDocRef, {
+                    age: userAge,
+                    gender: userGender,
+                    score: currentScore,
+                    totalQuestions: numberOfQuestionsPerQuiz, // Use the number of questions for this attempt
+                    timestamp: new Date()
+                }, { merge: true });
+                console.log("Quiz attempt saved successfully!");
+            } catch (error) {
+                console.error("Error saving quiz attempt:", error);
+            }
+        }
+
+        /**
+         * Loads and displays the current question and its choices.
+         */
+        function loadQuestion() {
+            if (currentQuestionIndex < quizQuestionsForThisAttempt.length) {
+                const currentQuestion = quizQuestionsForThisAttempt[currentQuestionIndex];
+                questionTextElement.textContent = currentQuestion.question;
+                choicesContainer.innerHTML = ''; // Clear previous choices
+                feedbackArea.classList.add('hidden'); // Hide feedback area
+
+                currentQuestion.choices.forEach((choice, index) => {
+                    const button = document.createElement('button');
+                    button.textContent = choice;
+                    button.classList.add(
+                        'choice-button',
+                        'w-full', 'p-4', 'sm:p-5', 'rounded-xl', 'shadow-md', 'border', 'border-gray-300',
+                        'text-left', 'text-gray-700', 'font-medium', 'hover:bg-gray-100',
+                        'transition', 'duration-200', 'transform', 'hover:-translate-y-1'
+                    );
+                    button.dataset.index = index; // Store the index of the choice
+                    button.addEventListener('click', handleChoiceClick);
+                    choicesContainer.appendChild(button);
+                });
+            } else {
+                showResults(); // All questions answered
+            }
+        }
+
+        /**
+         * Handles a user clicking on a choice button.
+         * @param {Event} event The click event.
+         */
+        function handleChoiceClick(event) {
+            if (!quizActive) return; // Prevent interaction if quiz is over or feedback is showing
+
+            const selectedButton = event.target;
+            const selectedIndex = parseInt(selectedButton.dataset.index);
+            const currentQuestion = quizQuestionsForThisAttempt[currentQuestionIndex];
+
+            // Disable all choice buttons after a selection
+            Array.from(choicesContainer.children).forEach(button => {
+                button.disabled = true;
+                if (parseInt(button.dataset.index) === currentQuestion.correctAnswer) {
+                    button.classList.add('correct'); // Highlight correct answer
+                }
+            });
+
+            if (selectedIndex === currentQuestion.correctAnswer) {
+                score++;
+                feedbackTextElement.textContent = `Correct! ${currentQuestion.feedback}`;
+                feedbackTextElement.classList.remove('text-red-600');
+                feedbackTextElement.classList.add('text-green-600');
+            } else {
+                selectedButton.classList.add('incorrect'); // Highlight incorrect selection
+                feedbackTextElement.textContent = `Incorrect. The best response is: "${currentQuestion.choices[currentQuestion.correctAnswer]}". ${currentQuestion.feedback}`;
+                feedbackTextElement.classList.remove('text-green-600');
+                feedbackTextElement.classList.add('text-red-600');
+            }
+
+            feedbackArea.classList.remove('hidden'); // Show feedback area
+            quizActive = false; // Temporarily disable quiz interaction
+        }
+
+        /**
+         * Moves to the next question or shows results if all questions are answered.
+         */
+        function nextQuestion() {
+            currentQuestionIndex++;
+            quizActive = true; // Re-enable quiz interaction for the next question
+            loadQuestion();
+        }
+
+        /**
+         * Displays the quiz results at the end and provides conditional advice.
+         */
+        async function showResults() {
+            quizSection.classList.add('hidden'); // Hide quiz questions
+            resultsArea.classList.remove('hidden'); // Show results area
+            scoreDisplay.textContent = score;
+            totalQuestionsDisplay.textContent = numberOfQuestionsPerQuiz; // Display total questions for this attempt
+
+            await saveQuizAttempt(score); // Save the quiz attempt data
+
+            // Determine advice based on score
+            if (score >= passingScore) {
+                finalMessage.textContent = "Fantastic! You've shown strong skills in responding to cyberbullying. Keep practicing these strategies to empower yourself and others!";
+                finalMessageContainer.classList.remove('bg-red-50', 'border-red-200');
+                finalMessageContainer.classList.add('bg-green-50', 'border-green-200');
+                restartButton.textContent = "Retake Quiz (Optional)";
+                restartButton.classList.remove('bg-red-600', 'hover:bg-red-700');
+                restartButton.classList.add('bg-green-600', 'hover:bg-green-700');
+            } else {
+                finalMessage.textContent = "That's okay! Cyberbullying can be tricky, but every answer is a learning opportunity. Here's some advice: Remember to stay calm, be assertive, and don't hesitate to block, report, or seek help from a trusted adult if direct responses aren't enough or you feel unsafe. Practice makes perfect!";
+                finalMessageContainer.classList.remove('bg-green-50', 'border-green-200');
+                finalMessageContainer.classList.add('bg-red-50', 'border-red-200');
+                restartButton.textContent = "Retake Quiz";
+                restartButton.classList.remove('bg-green-600', 'hover:bg-green-700');
+                restartButton.classList.add('bg-red-600', 'hover:bg-red-700');
+            }
+        }
+
+        /**
+         * Resets the quiz to its initial state and returns to info collection.
+         */
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            quizActive = true;
+            userAge = null;
+            userGender = null;
+            sessionID = null; // Clear session ID for a new attempt
+            quizQuestionsForThisAttempt = []; // Clear current questions
+
+            resultsArea.classList.add('hidden'); // Hide results
+            quizSection.classList.add('hidden'); // Hide quiz
+            infoCollectionSection.classList.remove('hidden'); // Show info collection
+            ageInput.value = ''; // Clear age input
+            genderSelect.value = ''; // Clear gender selection
+            ageError.classList.add('hidden'); // Hide errors
+            genderError.classList.add('hidden'); // Hide errors
+        }
+
+        // Event Listeners
+        startQuizButton.addEventListener('click', submitUserInfo);
+        nextButton.addEventListener('click', nextQuestion);
+        restartButton.addEventListener('click', restartQuiz);
+    </script>
+</body>
+</html>

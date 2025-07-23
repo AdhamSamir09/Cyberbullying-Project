@@ -1,33 +1,79 @@
+/* Global Reset */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Body style */
-  body {
-    font-family: Arial, sans-serif;
-    background: url('background.jpeg') no-repeat center center fixed;
-    background-size: cover;
-    color: #333;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-  }
-  
-  /* Main container */
-  .container {
-    background-color: #fff; /* White card */
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
-    max-width: 700px;
-    width: 100%;
-  }
-  
-  /* Titles */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Body and general layout */
+body {
+  background-color: white; 
+  color: #2c3e50; /* Navy */
+  line-height: 1.6;
+}
+
+/* Container for central content */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+}
+
+/* Header */
+.title {
+  font-size: 2.2rem;
+  text-align: center;
+  color: #2c3e50; /* Navy */
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Motivational Quote Style (New as Speech Bubble) */
+.speech-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 30px auto;
+  max-width: 900px;
+}
+
+.boy-image {
+  width: 140px;
+  height: auto;
+  margin-right: 20px;
+}
+
+.speech-bubble {
+  background-color: #a0ecff;
+  padding: 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  color: #0077a3;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  font-size: 18px;
+  position: relative;
+}
+
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  left: -20px;
+  top: 20px;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-right-color: #a0ecff;
+}
+
+/* Titles */
   .title {
     font-size: 2rem;
     color: #4a6fa5; /* Pastel blue */
@@ -93,7 +139,7 @@
     transition: background-color 0.3s ease;
     text-decoration: none;
     display: inline-block;
-    text-align: center;
+    text-align:center;
   }
   
   .submit-btn:hover {
@@ -120,7 +166,8 @@
       font-size: 1rem;
     }
   }
-  button {
+
+   button {
     background-color: #a8dadc; /* Soft pastel teal */
     color: #033649;
     border: none;
@@ -133,3 +180,41 @@
     display: inline-block;
     text-align: center;
   }
+
+.navbar {
+  background-color: #222;        /* Dark background */
+  padding: 12px 24px;
+  display: flex;
+  gap: 20px;                     /* Space between links */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* All links inside navbar */
+.navbar a {
+  color: #eee;                   /* Light text */
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect for all links */
+.navbar a:hover {
+  background-color: #555;
+  color: #fff;
+}
+
+/* Special style for AI Helper link */
+.navbar a.ai-helper {
+  background-color: #007BFF;    /* Blue background */
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0,123,255,0.5);
+}
+
+/* Hover effect for AI Helper */
+.navbar a.ai-helper:hover {
+  background-color: #0056b3;
+  box-shadow: 0 4px 10px rgba(0,86,179,0.7);
+}

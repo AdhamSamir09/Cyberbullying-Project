@@ -201,6 +201,11 @@ const questions = [
       }
     });
   });
+
+  document.querySelector('.ai-helper').addEventListener('click', function() {
+  alert("AI Helper is here to assist!");
+});
+
   
   // Load questions when page loads
   window.onload = loadQuestions;
