@@ -1,97 +1,133 @@
 <!DOCTYPE html>
+<!-- Declare the HTML5 document -->
 <html lang="en">
 <head>
+  <!-- Set character encoding to UTF-8 -->
   <meta charset="UTF-8" />
-  <title>Think Before You Type - Advice Chatbot</title>
+  <!-- Page title shown in browser tab -->
+  <title>Think Before You Type: Advice Chat</title>
 
-  <!-- Link to your custom stylesheet -->
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <!-- Tailwind CSS CDN for styling utility classes -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Header with nav bar -->
-  <header class="navbar">
-    <div class="navbar-quote">Think Before You Type</div>
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="Quiz.html">Quiz</a>
-      <a href="resources.html">Resources</a>
-    </nav>
-  </header>
+  <!-- Google Fonts: Inter font used throughout the site -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Main Chat Area -->
-  <main class="container">
-    <h2 class="title">💬 Ask for Advice</h2>
-    <p class="subtitle">Need help dealing with cyberbullying? Ask your question below.</p>
-
-    <!-- Chat message area -->
-    <div id="chat" class="question-block" style="height: 300px; overflow-y: auto; margin-bottom: 20px;"></div>
-
-    <!-- Input and send button -->
-    <div style="display: flex; gap: 10px;">
-      <input id="userInput" type="text" placeholder="Type your question..." />
-      <button onclick="sendMessage()">Send</button>
-    </div>
-  </main>
-
-  <!-- Chat script -->
-  <script>
-    const input = document.getElementById("userInput");
-
-    function appendMessage(sender, text, colorClass = "") {
-      const chat = document.getElementById("chat");
-      const message = document.createElement("div");
-      message.className = "message " + colorClass;
-      message.innerHTML = `<strong>${sender}:</strong> ${text}`;
-      chat.appendChild(message);
-      chat.scrollTop = chat.scrollHeight;
+  <!-- Custom scrollbar and font setup -->
+  <style>
+    body {
+      background-color: #f3f4f6; /* Light gray background */
     }
 
+    /* Custom scrollbar styles */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #e2e8f0;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+  </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+  <!-- HEADER: Navigation bar -->
+  <header class="bg-gradient-to-r from-sky-400 to-blue-500 text-white p-4 shadow-lg">
+    <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+      <!-- Website name -->
+      <h1 class="text-2xl font-bold mb-2 md:mb-0 text-white">Think Before You Type</h1>
+
+      <!-- Navigation links -->
+      <nav>
+        <ul class="flex space-x-4">
+          <li><a href="Login.html" class="bg-blue-600 hover:underline text-lg font-medium p-2 rounded-md">Home</a></li>
+          <li><a href="Quiz.html" class="bg-blue-600 hover:underline text-lg font-medium p-2 rounded-md">Quiz</a></li>
+          <li><a href="resources.html" class="bg-blue-600 hover:underline text-lg font-medium p-2 rounded-md">Resources</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN: Chat application -->
+  <main class="flex-grow container mx-auto p-6 bg-white shadow-xl rounded-lg my-8 max-w-2xl">
+    <!-- Title above chat -->
+    <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">💬 Ask for Advice</h2>
+
+    <!-- Chat message display area -->
+    <div id="chat" class="bg-blue-50 border border-blue-200 rounded-xl p-4 h-[60vh] overflow-y-auto space-y-4 mb-4"></div>
+
+    <!-- Input + Send button -->
+    <div class="flex gap-2">
+      <!-- Input field where user types their question -->
+      <input id="userInput" type="text" placeholder="Type your question..." class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+
+      <!-- Send button -->
+      <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition transform hover:scale-105">Send</button>
+    </div>
+  </main>
+  
+  <!-- SCRIPT: Handles chat behavior and AI request -->
+  <script>
+    const input = document.getElementById("userInput"); // Input field reference
+
+    // Function to display a new message in the chat box
+    function appendMessage(sender, text, colorClass) {
+      const chat = document.getElementById("chat");
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("message", colorClass); // Add sender-specific style
+      messageDiv.innerHTML = `<strong>${sender}:</strong> ${text}`; // Display sender and message
+      chat.appendChild(messageDiv);
+      chat.scrollTop = chat.scrollHeight; // Scroll to bottom
+    }
+
+    // (Optional) Clean format of steps in AI response like: "1. ... 2. ..."
     function formatSteps(text) {
       return text.replace(/(\d+)\.\s/g, '\n$1. ');
     }
 
+    // Send user's message to the local AI model server and get a response
     async function sendMessage() {
-  const userText = input.value.trim();
-  if (!userText) return;
+      const userText = input.value.trim();
+      if (!userText) return; // Don’t send empty message
 
-  const age = localStorage.getItem("userAge") || "young";
-  const gender = localStorage.getItem("userGender") || "person";
+      // Pull user info from localStorage if stored
+      const age = localStorage.getItem("userAge") || "young";
+      const gender = localStorage.getItem("userGender") || "person";
 
-  const fullPrompt = `
-      You are a friendly, supportive assistant trained to help people online.
-      You're currently helping a ${age}-year-old ${gender}. 
-      Provide thoughtful, encouraging advice. 
-      Do not mention the user's age or gender in your response.
-      Use simple, caring language and respond in under 7 lines.
-      Avoid repeating the user's words exactly. Focus on making them feel understood and supported.
+      // Final prompt sent to AI — kind and personalized
+      const fullPrompt = `You are a supportive assistant talking to a ${age}-year-old ${gender}. Respond kindly.\nUser: ${userText}`;
 
-      User: ${userText}
-      Assistant:
-`;
+      appendMessage("You", userText, "user"); // Show user message
+      input.value = ""; // Clear input field
 
-  appendMessage("You", userText, "user");
-  input.value = "";
+      try {
+        // Send POST request to local AI API (Ollama or other server)
+        const response = await fetch("http://localhost:11434/api/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: "gemma:2b",       // The model you're using (e.g. Gemma 2B)
+            prompt: fullPrompt,      // The message to generate a reply for
+            stream: false            // Get full reply at once
+          })
+        });
 
-  try {
-    const response = await fetch("http://localhost:11434/api/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "gemma:2b",
-        prompt: fullPrompt,
-        stream: false
-      })
-    });
-
-    const data = await response.json();
-    const cleanText = formatSteps(data.response.trim());
-    appendMessage("Gemma", cleanText, "bot");
-  } catch {
-    appendMessage("Error", "⚠️ Unable to get a response from the server.", "text-red-600");
-  }
-}
+        // Extract response and format it
+        const data = await response.json();
+        const cleanText = formatSteps(data.response);
+        appendMessage("Gemma", cleanText, "bot"); // Show bot message
+      } catch {
+        // If there's an error connecting to the server
+        appendMessage("Error", "⚠️ Unable to get a response from the server.", "text-red-600");
+      }
+    }
   </script>
-
 </body>
 </html>

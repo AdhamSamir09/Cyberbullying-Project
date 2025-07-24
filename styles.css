@@ -8,12 +8,12 @@
 
 /* Body and general layout */
 body {
-  background-color: rgb(231, 229, 214); 
-  color: #2c3e50;
+  background-color: white; 
+  color: #2c3e50; /* Navy */
   line-height: 1.6;
 }
 
-/* Container Styling */
+/* Container for central content */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -36,7 +36,7 @@ body {
   margin-bottom: 40px;
 }
 
-/* Speech Bubble Styling */
+/* Motivational Quote Style (New as Speech Bubble) */
 .speech-container {
   display: flex;
   align-items: flex-start;
@@ -76,7 +76,7 @@ body {
 /* Titles */
   .title {
     font-size: 2rem;
-    color: #4a6fa5;
+    color: #4a6fa5; /* Pastel blue */
     margin-bottom: 15px;
     text-align: center;
   }
@@ -129,7 +129,7 @@ body {
   
   /* Submit Btn Style */
   .submit-btn {
-    background-color: #a8dadc;
+    background-color: #a8dadc; /* Soft pastel teal */
     color: #033649;
     border: none;
     padding: 12px 20px;
@@ -168,7 +168,7 @@ body {
   }
 
    button {
-    background-color: #a8dadc;
+    background-color: #a8dadc; /* Soft pastel teal */
     color: #033649;
     border: none;
     padding: 12px 20px;
@@ -179,46 +179,42 @@ body {
     text-decoration: none;
     display: inline-block;
     text-align: center;
-    -webkit-transition: background-color 0.3s ease;
-    -moz-transition: background-color 0.3s ease;
-    -ms-transition: background-color 0.3s ease;
-    -o-transition: background-color 0.3s ease;
-}
+  }
 
 .navbar {
-  background-color: #a6d2ed;
-  padding: 12px 20px;
+  background-color: #222;        /* Dark background */
+  padding: 12px 24px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: Arial, sans-serif;
+  gap: 20px;                     /* Space between links */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Quote on the left */
-.navbar-quote {
-  font-size: 1.4em;
-  font-weight: bold;
-  color: #222;
-}
-
-/* Container for the links on the right */
-.nav-links {
-  display: flex;
-  gap: 15px;
-}
-
-/* Style nav links */
+/* All links inside navbar */
 .navbar a {
-  color: #fff;
-  background-color: #007BFF;
-  padding: 10px 16px;
-  border-radius: 8px;
+  color: #eee;                   /* Light text */
   text-decoration: none;
-  font-weight: bold;
-  font-size: 1em;
-  transition: background-color 0.3s ease;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Hover effect for all links */
 .navbar a:hover {
+  background-color: #555;
+  color: #fff;
+}
+
+/* Special style for AI Helper link */
+.navbar a.ai-helper {
+  background-color: #007BFF;    /* Blue background */
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0,123,255,0.5);
+}
+
+/* Hover effect for AI Helper */
+.navbar a.ai-helper:hover {
   background-color: #0056b3;
+  box-shadow: 0 4px 10px rgba(0,86,179,0.7);
 }
