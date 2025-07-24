@@ -6,6 +6,15 @@
   <!-- Link css file -->
   <link rel="stylesheet" href="styles.css">
 </head>
+
+ <!--Nav Bar-->
+<nav class="navbar">
+  <span class="navbar-quote">Think Before You Type</span>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+  </div>
+</nav>
+
 <body>
   <div class="container">
     <!-- Login header -->
@@ -13,7 +22,7 @@
 
     <!-- Login form (switch to quiz page after submit) -->
     <form
-      onsubmit="event.preventDefault(); window.location.href='quiz.html';" 
+      onsubmit="handleLogin(event)"
       class="quiz-form"
     >
       <!-- Username input -->
@@ -28,9 +37,42 @@
         <input type="password" required style="width: 100%; padding: 8px; margin-top: 5px;">
       </div>
 
+      <!-- Age input -->
+      <div class="question-block">
+        <label>Age:</label>
+        <input type="number" required style="width: 100%; padding: 8px; margin-top: 5px;" min="4" max="100">
+      </div>
+
+            <!-- Gender input -->
+      <div class="question-block">
+        <label>Gender:</label>
+        <select id="gender" name="gender" required>
+          <option value="">Please select</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+
       <!-- Login btn -->
       <button type="submit" class="submit-btn">Login</button>
     </form>
   </div>
+  <script>
+  function handleLogin(event) {
+    event.preventDefault(); // Stop form from submitting the default way
+
+    // Get age and gender values
+    const ageValue = document.querySelector('input[type="number"]').value;
+    const genderValue = document.querySelector('select[name="gender"]').value;
+
+    // Save to localStorage
+    localStorage.setItem("userAge", ageValue);
+    localStorage.setItem("userGender", genderValue);
+
+    // Redirect to quiz.html
+    window.location.href = 'quiz.html';
+  }
+</script>
+
 </body>
 </html>

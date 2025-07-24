@@ -141,21 +141,21 @@ const questions = [
       ]
     }
   ];
-  
+
   // Display all questions
   function loadQuestions() {
     const qBox = document.getElementById("questions-box");
-  
+
     questions.forEach((q, qIndex) => {
       // Create question container
       const qDiv = document.createElement("div");
       qDiv.className = "question-block";
-  
+
       // Add question text
       const qTitle = document.createElement("h3");
       qTitle.textContent = q.question;
       qDiv.appendChild(qTitle);
-  
+
       // Add each choice with radio btn (prevent multi-choice)
       q.choices.forEach((choice, cIndex) => {
         const label = document.createElement("label");
@@ -166,31 +166,31 @@ const questions = [
         qDiv.appendChild(label);
         qDiv.appendChild(document.createElement("br"));
       });
-  
+
       // Add feedback placeholder
       const feedback = document.createElement("div");
       feedback.id = `feedback-${qIndex}`;
       feedback.className = "feedback";
       qDiv.appendChild(feedback);
-  
+
       // Add question block to the page
       qBox.appendChild(qDiv);
     });
   }
-  
+
   // Handle form submit
   document.getElementById("quiz-form").addEventListener("submit", function (e) {
     e.preventDefault(); // Prevent page reload
-  
+
     // Check each question's answer
     questions.forEach((q, qIndex) => {
       const selected = document.querySelector(`input[name="q${qIndex}"]:checked`);
       const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
-  
+
       if (selected) {
         const chosenIndex = parseInt(selected.value);
         const correct = chosenIndex === q.correct;
-  
+
         // Show explanation and color
         feedbackDiv.innerHTML = q.explanation[chosenIndex];
         feedbackDiv.style.color = correct ? "green" : "red";
@@ -202,10 +202,10 @@ const questions = [
     });
   });
 
-  document.querySelector('.ai-helper').addEventListener('click', function() {
+  /*document.querySelector('.ai-helper').addEventListener('click', function() {
   alert("AI Helper is here to assist!");
-});
+});*/
 
-  
+
   // Load questions when page loads
   window.onload = loadQuestions;

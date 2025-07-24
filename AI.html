@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Think Before You Type - Advice Chatbot</title>
+
+  <!-- Link to your custom stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Header with nav bar -->
+  <header class="navbar">
+    <div class="navbar-quote">Think Before You Type</div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="Quiz.html">Quiz</a>
+      <a href="resources.html">Resources</a>
+    </nav>
+  </header>
+
+  <!-- Main Chat Area -->
+  <main class="container">
+    <h2 class="title">💬 Ask for Advice</h2>
+    <p class="subtitle">Need help dealing with cyberbullying? Ask your question below.</p>
+
+    <!-- Chat message area -->
+    <div id="chat" class="question-block" style="height: 300px; overflow-y: auto; margin-bottom: 20px;"></div>
+
+    <!-- Input and send button -->
+    <div style="display: flex; gap: 10px;">
+      <input id="userInput" type="text" placeholder="Type your question..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </main>
+
+  <!-- Chat script -->
+  <script>
+    const input = document.getElementById("userInput");
+
+    function appendMessage(sender, text, colorClass = "") {
+      const chat = document.getElementById("chat");
+      const message = document.createElement("div");
+      message.className = "message " + colorClass;
+      message.innerHTML = `<strong>${sender}:</strong> ${text}`;
+      chat.appendChild(message);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function formatSteps(text) {
+      return text.replace(/(\d+)\.\s/g, '\n$1. ');
+    }
+
+    async function sendMessage() {
+  const userText = input.value.trim();
+  if (!userText) return;
+
+  const age = localStorage.getItem("userAge") || "young";
+  const gender = localStorage.getItem("userGender") || "person";
+
+  const fullPrompt = `
+      You are a friendly, supportive assistant trained to help people online.
+      You're currently helping a ${age}-year-old ${gender}. 
+      Provide thoughtful, encouraging advice. 
+      Do not mention the user's age or gender in your response.
+      Use simple, caring language and respond in under 7 lines.
+      Avoid repeating the user's words exactly. Focus on making them feel understood and supported.
+
+      User: ${userText}
+      Assistant:
+`;
+
+  appendMessage("You", userText, "user");
+  input.value = "";
+
+  try {
+    const response = await fetch("http://localhost:11434/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "gemma:2b",
+        prompt: fullPrompt,
+        stream: false
+      })
+    });
+
+    const data = await response.json();
+    const cleanText = formatSteps(data.response.trim());
+    appendMessage("Gemma", cleanText, "bot");
+  } catch {
+    appendMessage("Error", "⚠️ Unable to get a response from the server.", "text-red-600");
+  }
+}
+  </script>
+
+</body>
+</html>

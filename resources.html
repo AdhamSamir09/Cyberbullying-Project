@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Think Before You Type - Resources</title>
+
+  <!-- Link to custom styles -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="navbar">
+    <div class="navbar-quote">Think Before You Type</div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="Quiz.html">Quiz</a>
+      <a href="AI.html">AI Helper</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="question-block" style="padding: 30px; max-width: 1000px; margin: 40px auto;">
+      <h2 class="title" style="margin-bottom: 10px;">
+        <i class="fas fa-book-open" style="color: #4a6fa5; margin-right: 10px;"></i>
+        Cyberbullying Resources
+      </h2>
+      <p class="subtitle" style="margin-bottom: 25px;">
+        Explore these helpful videos on understanding and responding to cyberbullying.
+      </p>
+
+      <!-- Accordion Sections -->
+      <div class="accordion-container" style="display: flex; flex-direction: column; gap: 20px;">
+        
+        <!-- Section 1 -->
+        <div class="accordion-section" style="border: 1px solid #ccc; border-radius: 8px;">
+          <button class="accordion-btn submit-btn" style="width: 100%; text-align: left;">
+            <i class="fas fa-shield-alt" style="margin-right: 10px;"></i> Understanding Cyberbullying
+            <i class="fas fa-chevron-down" style="float: right;"></i>
+          </button>
+          <div class="accordion-content" style="display: none; padding: 20px;">
+            <div class="video-container">
+              <iframe src="https://www.youtube.com/embed/6ctd75a7_Yw" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="accordion-section" style="border: 1px solid #ccc; border-radius: 8px;">
+          <button class="accordion-btn submit-btn" style="width: 100%; text-align: left;">
+            <i class="fas fa-comments" style="margin-right: 10px;"></i> Consequences of Cyberbullying
+            <i class="fas fa-chevron-down" style="float: right;"></i>
+          </button>
+          <div class="accordion-content" style="display: none; padding: 20px;">
+            <div class="video-container">
+              <iframe src="https://www.youtube.com/embed/ye0h1rjS_Qw" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="accordion-section" style="border: 1px solid #ccc; border-radius: 8px;">
+          <button class="accordion-btn submit-btn" style="width: 100%; text-align: left;">
+            <i class="fas fa-users" style="margin-right: 10px;"></i> How to Respond
+            <i class="fas fa-chevron-down" style="float: right;"></i>
+          </button>
+          <div class="accordion-content" style="display: none; padding: 20px;">
+            <div class="video-container">
+              <iframe src="https://www.youtube.com/embed/Jwu_7IqWh8Y" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Accordion Script -->
+  <script>
+    const buttons = document.querySelectorAll('.accordion-btn');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const content = button.nextElementSibling;
+        const icon = button.querySelector('.fa-chevron-down');
+
+        const isOpen = content.style.display === 'block';
+
+        // Close all
+        document.querySelectorAll('.accordion-content').forEach(c => c.style.display = 'none');
+        document.querySelectorAll('.fa-chevron-down').forEach(i => i.style.transform = 'rotate(0deg)');
+
+        // Toggle current
+        if (!isOpen) {
+          content.style.display = 'block';
+          icon.style.transform = 'rotate(180deg)';
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
